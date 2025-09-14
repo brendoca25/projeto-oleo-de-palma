@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Projeto — Alerta Óleo de Palma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --verde-escuro: #2e7d32;
+            --verde-claro: #a5d6a7;
+            --offwhite: #f2fbf2;
+            --branco: #ffffff;
+            --texto: #264229;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            color: var(--texto);
+            /* Fundo de floresta da Amazônia */
+            background: linear-gradient(rgba(246, 255, 246, 0.88), rgba(246, 255, 246, 0.88)), url('https://img.freepik.com/fotos-premium/imagens-aereas-sobrevoando-uma-plantacao-de-oleo-de-palma_1028938-137521.jpg') center/cover no-repeat fixed;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--verde-escuro), #57a05a);
+            color: white;
+            padding: 16px 12px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        header .title {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 1.05rem;
+        }
+
+        header .logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 12px;
+            flex-wrap: wrap;
+        }
+
+        .aba {
+            background: var(--branco);
+            border-radius: 28px;
+            padding: 9px 16px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--texto);
+            transition: transform .16s ease, box-shadow .16s ease;
+            box-shadow: 0 4px 10px rgba(2, 40, 12, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .aba:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(6, 35, 10, 0.09);
+        }
+
+        .aba.ativa {
+            background: var(--verde-escuro);
+            color: white;
+            box-shadow: 0 12px 28px rgba(46, 125, 50, 0.16);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 22px auto;
+            padding: 12px;
+        }
+
+        /* CAIXAS BRANCAS arredondadas ao redor do conteúdo */
+        .card {
+            background: var(--branco);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 10px 30px rgba(6, 30, 10, 0.06);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .row {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .col {
+            flex: 1 1 320px;
+            min-width: 260px;
+        }
+
+        h2 {
+            color: var(--verde-escuro);
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        p {
+            margin: 0 0 12px 0;
+            line-height: 1.55;
+            color: #2d3e2d;
+        }
+
+        .img-wrap {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            background-position: center;
+            background-size: cover;
+            box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.02);
+        }
+
+        .credit {
+            font-size: 12px;
+            color: #41523f;
+            margin-top: 8px;
+        }
+
+        /* --- Livro de Alternativas: retângulo dividido com cantos arredondados nos extremos --- */
+        .alt-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .alt-left,
+        .alt-right {
+            flex: 1 1 200px;
+            padding: 18px;
+            background: linear-gradient(180deg, #fff, #f7fff7);
+            border-radius: 18px;
+            box-shadow: 0 4px 10px rgba(2, 40, 12, 0.04);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        
+        .alt-left:hover,
+        .alt-right:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(6, 35, 10, 0.09);
+        }
+
+        .alt-title {
+            font-weight: 700;
+            color: var(--verde-escuro);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .alt-list {
+            margin: 0;
+            padding-left: 16px;
+            color: #2d3e2d;
+        }
+
+        /* Responsivo */
+        @media (max-width:720px) {
+            .row {
+                flex-direction: column;
+            }
+
+            .img-wrap {
+                height: 160px;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 16px;
+            color: #40533f;
+            font-size: 13px;
+            margin: 30px 0 60px 0;
+        }
+
+        /* Form styles simples */
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d9e6d9;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        button.primary {
+            background: var(--verde-escuro);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        small.note {
+            color: #556b56;
+            display: block;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">🌿</div>
+        <div class="title">Projeto — Alerta Óleo de Palma</div>
+    </header>
+    <nav>
+        <button class="aba ativa" onclick="abrirAba(event,'sobre')">Sobre o Projeto</button>
+        <button class="aba" onclick="abrirAba(event,'detalhes')">O Projeto (mais)</button>
+        <button class="aba" onclick="abrirAba(event,'descobrir')">Como Descobrir</button>
+        <button class="aba" onclick="abrirAba(event,'livro')">Livro de Alternativas</button>
+        <button class="aba" onclick="abrirAba(event,'sugestoes')">Sugestões</button>
+    </nav>
+    <main>
+        <section id="sobre" class="card conteudo-aba ativo">
+            <div class="row">
+                <div class="col">
+                    <h2>Resumo do projeto</h2>
+                    <p> Este projeto investiga os impactos ambientais e à saúde causados pela produção e pelo uso do óleo de palma. Queremos informar a população sobre desmatamento e riscos do consumo excessivo, e divulgar alternativas mais sustentáveis. Nosso objetivo é que as pessoas façam escolhas conscientes e cobrem práticas responsáveis das empresas. </p>
+                    <p style="font-size:13px;color:#4a5a47"><strong>Autores:</strong> Brenda Langner, Vitória Cristina, Yasmin Kayser — Feira 2025.</p>
+                </div>
+                <div class="col">
+                    <div class="img-wrap" style="background-image: url('https://www.brasilbiofuels.com.br/app/uploads/2022/11/oleo-de-palma-com-os-frutos.jpg');">
+                    </div>
+                    <div class="credit">Imagem de um cacho de dendê — fonte: Brasil Biofuels.</div>
+                </div>
+            </div>
+        </section>
+        <section id="detalhes" class="card conteudo-aba" style="display:none;">
+            <div class="row">
+                <div class="col">
+                    <h2>O projeto em detalhes</h2>
+                    <p> O óleo de palma (azeite de dendê) é muito usado por indústrias porque é barato e tem boa resistência a altas temperaturas. Porém, sua plantação em larga escala causa desmatamento, perda de espécies e emissões de gases que pioram o aquecimento global. </p>
+                    <p> Para a saúde: o óleo de palma tem uma quantidade elevada de gorduras saturadas. Consumido em excesso, pode aumentar colesterol ruim (LDL) e o risco de doenças cardiovasculares. A melhor atitude do consumidor é ler o rótulo, reduzir produtos ultraprocessados e preferir alternativas com óleos menos saturados. </p>
+                </div>
+                <div class="col">
+                    <div class="img-wrap" style="background-image: url('https://thumbs.dreamstime.com/b/%c3%a1rvore-do-%c3%b3leo-de-palma-71990219.jpg');">
+                    </div>
+                    <div class="credit">Imagem de uma dendezeira — Dreamstime (ilustrativa).</div>
+                </div>
+            </div>
+            <div style="margin-top:14px;">
+                <h3 style="color:#386b38;margin-bottom:6px;">O que você pode fazer hoje</h3>
+                <ul>
+                    <li>Verificar rótulos antes de comprar; prefira produtos com ingredientes claros.</li>
+                    <li>Escolher produtos com óleos alternativos (girassol, coco, etc.) quando possível.</li>
+                    <li>Compartilhar informação com família e amigos e apoiar marcas sustentáveis.</li>
+                </ul>
+            </div>
+        </section>
+        <section id="descobrir" class="card conteudo-aba" style="display:none;">
+            <h2>Como Descobrir se um Produto tem Óleo de Palma</h2>
+            <div style="background:var(--branco); border-radius:12px; padding:14px; box-shadow:0 8px 18px rgba(4,40,12,0.04);">
+                <p> Descobrir se um produto contém óleo de palma pode ser complicado — ele nem sempre aparece de forma explícita nos rótulos. O primeiro passo (e o mais importante) é sempre ler a lista de ingredientes na embalagem do produto. </p>
+                <p><strong>Procure diretamente por:</strong> "Óleo de Palma", "Gordura de Palma" ou "Azeite de Dendê". Em inglês: "Palm oil". O nome botânico também pode aparecer: "Elaeis guineensis (Palm) oil".</p>
+                <p><strong>Atenção</strong>: O óleo de palma costuma aparecer sob muitos outros nomes — por isso, procure também termos genéricos e derivados:</p>
+                <ul>
+                    <li>Termos genéricos: "Óleo Vegetal", "Gordura Vegetal" (muitas empresas usam sem especificar origem).</li>
+                    <li>Derivados técnicos e gorduras: "Gordura CBE" (Cocoa Butter Equivalent), "Gordura CBS", "Gordura de palma fracionada".</li>
+                    <li>Ácidos e álcoois comuns: "Ácido Palmítico", "Palmitato", "Estearato de Glicerol", "Álcool Cetílico", "Álcool Estearílico", "Álcool Oleílico", "Octildodecanol", "Palmitato de Ascorbila".</li>
+                    <li>Emulsificantes / aditivos: "E471" (Mono e Diglicerídeos de Ácidos Graxos — de origem vegetal), "Glicerol", "Estearato", "Oleato", "Sorbitan monostearato".</li>
+                    <li>Ingredientes em cosméticos e sabonetes: "sodium palmate", "sodium palm kernelate", "lauril sulfato de sódio (SLS)".</li>
+                </ul>
+                <p> Produtos ultraprocessados (biscoitos, chocolates, margarinas, sorvetes, salgadinhos, pães industrializados) e muitos cosméticos/higiene pessoal frequentemente usam óleo de palma ou seus derivados. Mesmo se um produto mostra selo de "palma sustentável", isso indica a origem, não a ausência do ingrediente. </p>
+                <p><strong>Dicas rápidas:</strong></p>
+                <ul>
+                    <li>Pesquise o nome do produto + "ingredientes" na internet.</li>
+                    <li>Use apps de escaneamento de rótulos (que mostram ingredientes e substitutos).</li>
+                    <li>Quando a lista tem "Óleo Vegetal" sem especificar, desconfie e procure mais informações.</li>
+                </ul>
+                <p><strong>Exemplos de nomes no rótulo que indicam palma ou derivados:</strong></p>
+                <ul>
+                    <li>Óleo de palma / Palm oil / Palm fat</li>
+                    <li>Gordura vegetal</li>
+                    <li>Palmiste / Palm kernel oil</li>
+                    <li>Estearato de sódio / Palmitato</li>
+                    <li>Lauril sulfato de sódio (SLS)</li>
+                    <li>Mono e diglicerídeos de ácidos graxos</li>
+                    <li>Glicerina (quando não especifica a origem)</li>
+                    <li>Sorbitan monostearato</li>
+                </ul>
+                <p>Se persistir a dúvida, pesquise, contate o fabricante ou preferivelmente escolha alternativas conhecidas por serem sem palma.</p>
+            </div>
+        </section>
+        <section id="livro" class="card conteudo-aba" style="display:none;">
+            <h2>Livro de Alternativas</h2>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Biscoitos doces — com palma</div>
+                    <ul class="alt-list">
+                        <li>Passatempo, Bono, Negresco, Oreo, Club Social</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Biscoitos doces — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Belvita (Natura)</li>
+                        <li>Biscoitos Artesanais Veganos</li>
+                        <li>Cookies Jasmine integrais</li>
+                        <li>Trio Orgânico (alguns sabores)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Margarina e Cremes vegetais — com palma</div>
+                    <ul class="alt-list">
+                        <li>Qualy, Doriana, Delícia, Becel, Claybom</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Margarina e Cremes — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Manteiga Ghee</li>
+                        <li>Cremes de castanhas artesanais</li>
+                        <li>Óleo de coco sólido</li>
+                        <li>Azeite de Oliva</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Sorvetes — com palma</div>
+                    <ul class="alt-list">
+                        <li>Kibon, Nestlé, sorvetes genéricos</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Sorvetes — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Ben & Jerry’s</li>
+                        <li>Sorvetes veganos artesanais</li>
+                        <li>Sorvetes de frutas simples</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Shampoos e Sabonetes — com palma</div>
+                    <ul class="alt-list">
+                        <li>Seda, Dove, Palmolive, Lux, Rexona</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Shampoos e Sabonetes — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Matéria Prima</li>
+                        <li>Sal da Terra</li>
+                        <li>B.O.B. (Barrinhas)</li>
+                        <li>Lola Cosmetics (verifique rótulo)</li>
+                        <li>Sabão de coco (veja a marca)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Chocolate — com palma</div>
+                    <ul class="alt-list">
+                        <li>Bis, Kinder, Lacta, Garoto, Nestlé</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Chocolate — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Chocolates bean-to-bar</li>
+                        <li>Nugali, Amma, Dengo, Chocolife</li>
+                        <li>Barra de chocolate 70% cacau de boa qualidade</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Pães industrializados — com palma</div>
+                    <ul class="alt-list">
+                        <li>Panco, Wickbold, Pulmann</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Pães — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Pães artesanais e de fermentação natural</li>
+                        <li>Pães integrais de padarias naturais</li>
+                        <li>Pão Caseiro (feito em casa)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Salgadinhos — com palma</div>
+                    <ul class="alt-list">
+                        <li>Elma Chips, Ruffles, Fandangos</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Salgadinhos — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Roots to Go</li>
+                        <li>Mãe Terra Snacks (usam óleo de girassol)</li>
+                        <li>Salgadinhos assados (de batata ou mandioca)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Maionese — com palma</div>
+                    <ul class="alt-list">
+                        <li>Hellmann's, Arisco</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Maionese — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Maionese caseira</li>
+                        <li>Maionese Orgânica da Jasmine (óleo de girassol)</li>
+                        <li>Molho Pesto (com azeite)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Hidratante / Sabonete / Shampoo — com palma</div>
+                    <ul class="alt-list">
+                        <li>Nivea, Dove, Palmolive, Lux, Seda, Pantene</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Hidratante / Sabonete / Shampoo — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Weleda, Granado, Boni Natural, Bioart</li>
+                        <li>Sabonetes e óleos de coco puro</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="alt-box">
+                <div class="alt-left">
+                    <div class="alt-title">Produtos de Limpeza — com palma</div>
+                    <ul class="alt-list">
+                        <li>Veja, Minuano, Ypê (sabões)</li>
+                    </ul>
+                </div>
+                <div class="alt-right">
+                    <div class="alt-title">Produtos de Limpeza — sem palma</div>
+                    <ul class="alt-list">
+                        <li>Positiv.a, BioWash</li>
+                        <li>Sabão de Castela</li>
+                        <li>Álcool e vinagre (opções caseiras)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id="sugestoes" class="card conteudo-aba" style="display:none;">
+            <h2>Envie Sugestões</h2>
+            <div class="row">
+                <div class="col" style="flex:1;">
+                    <h3>Enviar sugestão (fácil)</h3>
+                    <form id="formSugestoes" action="https://formspree.io/f/SEU_FORM_ID_AQUI" method="POST">
+                        <label>Nome:<br>
+                            <input type="text" name="nome" required>
+                        </label>
+                        <label style="margin-top:8px">E-mail:<br>
+                            <input type="email" name="email" required>
+                        </label>
+                        <label style="margin-top:8px">Sugestão:<br>
+                            <textarea name="mensagem" rows="5" required></textarea>
+                        </label>
+                        <div style="margin-top:10px">
+                            <button type="submit" class="primary">Enviar Sugestão</button>
+                        </div>
+                        <small class="note">(Usamos Formspree para receber por e-mail — veja o passo a passo na documentação do Formspree para ativar).</small>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>
+            Imagens ilustrativas: Consulte sempre os rótulos dos produtos.
+        </p>
+        <p>
+            Imagem de fundo da floresta por
+            <a href="https://br.freepik.com/fotos-premium/imagens-aereas-sobrevoando-uma-plantacao-de-oleo-de-palma_137521.htm#fromView=search&page=1&position=34&uuid=40c0f913-c288-4c8d-b336-d25088924b45"
+               target="_blank" style="color:#41523f;">freepik.com</a>.
+        </p>
+        <p>© 2025 — Projeto Alerta Óleo de Palma</p>
+    </footer>
+    <script>
+        // alterna abas
+        function abrirAba(event, id) {
+            document.querySelectorAll('.conteudo-aba').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.aba').forEach(b => b.classList.remove('ativa'));
+            document.getElementById(id).style.display = 'block';
+            event.currentTarget.classList.add('ativa');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        // iniciar exibindo apenas 'sobre' (fallback)
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.conteudo-aba').forEach(s => {
+                if (!s.classList.contains('ativo')) s.style.display = 'none';
+            });
+            // garantir que sobre fique visível
+            const sobre = document.getElementById('sobre');
+            if (sobre) sobre.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
